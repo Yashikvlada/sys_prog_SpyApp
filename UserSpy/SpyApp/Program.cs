@@ -14,7 +14,12 @@ namespace SpyApp
         //всю информацию нужно писать в лог
         static void Main(string[] args)
         {
+            if (args.Length != 0)
+                Console.WriteLine(args.Length);
 
+            Console.WriteLine("Spy is app!");
+            Console.WriteLine("Press any key to close...");
+            Console.ReadLine();
         }
     }
 }
