@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpyAppClasses\SpyAppClasses.csproj">
+      <Project>{efa73d99-c0b2-4f85-9412-3d5a08392dd2}</Project>
+      <Name>SpyAppClasses</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

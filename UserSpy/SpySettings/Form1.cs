@@ -19,7 +19,7 @@ namespace SpySettings
     {
         //сюда мы запишем то, что выбрал пользователь
         //и передадим в SpyApp
-        private List<ISpyCommand> _selectedCommands;
+        private SpyInfo _spyInfo;
         private Process _procSpyApp;
         private string _spyAppName;
 
@@ -27,7 +27,7 @@ namespace SpySettings
         {
             InitializeComponent();
 
-            _selectedCommands = new List<ISpyCommand>();
+            _spyInfo = new SpyInfo();
 
             string thisAppPath = Path.GetDirectoryName(
                 Assembly.GetEntryAssembly().Location);
@@ -56,7 +56,10 @@ namespace SpySettings
                 MessageBox.Show("SpyApp.exe already runned!");
                 return;
             }
-           
+            _spyInfo.ModerOn = true;
+            var args = _spyInfo.SerializeToString();
+
+            _procSpyApp.StartInfo.Arguments = args;
             //запускаем сам процесс
             _procSpyApp.Start();
         }
