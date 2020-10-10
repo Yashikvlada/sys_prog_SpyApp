@@ -78,6 +78,7 @@
             this.checkBox_stats_on.TabIndex = 2;
             this.checkBox_stats_on.Text = "Собирать статистику";
             this.checkBox_stats_on.UseVisualStyleBackColor = true;
+            this.checkBox_stats_on.CheckedChanged += new System.EventHandler(this.checkBox_stats_on_CheckedChanged);
             // 
             // checkBox_mod_on
             // 
@@ -88,6 +89,7 @@
             this.checkBox_mod_on.TabIndex = 3;
             this.checkBox_mod_on.Text = "Модерировать";
             this.checkBox_mod_on.UseVisualStyleBackColor = true;
+            this.checkBox_mod_on.CheckedChanged += new System.EventHandler(this.checkBox_mod_on_CheckedChanged);
             // 
             // textBox_stats_report
             // 
@@ -95,6 +97,7 @@
             this.textBox_stats_report.Name = "textBox_stats_report";
             this.textBox_stats_report.Size = new System.Drawing.Size(252, 26);
             this.textBox_stats_report.TabIndex = 4;
+            this.textBox_stats_report.TextChanged += new System.EventHandler(this.textBox_stats_report_TextChanged);
             // 
             // label_stats_report
             // 
@@ -120,6 +123,7 @@
             this.textBox_mod_report.Name = "textBox_mod_report";
             this.textBox_mod_report.Size = new System.Drawing.Size(252, 26);
             this.textBox_mod_report.TabIndex = 6;
+            this.textBox_mod_report.TextChanged += new System.EventHandler(this.textBox_mod_report_TextChanged);
             // 
             // label_bad_words
             // 
@@ -136,6 +140,7 @@
             this.textBox_bad_words.Name = "textBox_bad_words";
             this.textBox_bad_words.Size = new System.Drawing.Size(252, 26);
             this.textBox_bad_words.TabIndex = 8;
+            this.textBox_bad_words.TextChanged += new System.EventHandler(this.textBox_bad_words_TextChanged);
             // 
             // label_bad_apps
             // 
@@ -152,6 +157,7 @@
             this.textBox_bad_apps.Name = "textBox_bad_apps";
             this.textBox_bad_apps.Size = new System.Drawing.Size(252, 26);
             this.textBox_bad_apps.TabIndex = 10;
+            this.textBox_bad_apps.TextChanged += new System.EventHandler(this.textBox_bad_apps_TextChanged);
             // 
             // button_stats_path
             // 
@@ -161,6 +167,7 @@
             this.button_stats_path.TabIndex = 12;
             this.button_stats_path.Text = "...";
             this.button_stats_path.UseVisualStyleBackColor = true;
+            this.button_stats_path.Click += new System.EventHandler(this.FileDialog);
             // 
             // button_mod_path
             // 
@@ -170,6 +177,7 @@
             this.button_mod_path.TabIndex = 13;
             this.button_mod_path.Text = "...";
             this.button_mod_path.UseVisualStyleBackColor = true;
+            this.button_mod_path.Click += new System.EventHandler(this.FileDialog);
             // 
             // button_badWords_path
             // 
@@ -179,6 +187,7 @@
             this.button_badWords_path.TabIndex = 14;
             this.button_badWords_path.Text = "...";
             this.button_badWords_path.UseVisualStyleBackColor = true;
+            this.button_badWords_path.Click += new System.EventHandler(this.FileDialog);
             // 
             // button_badApps_path
             // 
@@ -188,6 +197,7 @@
             this.button_badApps_path.TabIndex = 15;
             this.button_badApps_path.Text = "...";
             this.button_badApps_path.UseVisualStyleBackColor = true;
+            this.button_badApps_path.Click += new System.EventHandler(this.FileDialog);
             // 
             // button_stop_spy
             // 
@@ -210,6 +220,7 @@
             this.radioButton_Disable.TabStop = true;
             this.radioButton_Disable.Text = "Закрыть приложение";
             this.radioButton_Disable.UseVisualStyleBackColor = true;
+            this.radioButton_Disable.CheckedChanged += new System.EventHandler(this.radioButton_Disable_CheckedChanged);
             // 
             // radioButton_Statistics
             // 
@@ -222,6 +233,7 @@
             this.radioButton_Statistics.TabStop = true;
             this.radioButton_Statistics.Text = "Собирать статистику";
             this.radioButton_Statistics.UseVisualStyleBackColor = true;
+            this.radioButton_Statistics.CheckedChanged += new System.EventHandler(this.radioButton_Statistics_CheckedChanged);
             // 
             // Form_spySettings
             // 

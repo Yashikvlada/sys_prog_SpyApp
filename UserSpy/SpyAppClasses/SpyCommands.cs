@@ -28,7 +28,7 @@ namespace SpyAppClasses
             var propsName = this.GetType().GetProperties();
             foreach (var p in propsName)
             {
-                resStr += p.Name + ":" + p.GetValue(this).ToString() + "\n";
+                resStr += p.Name + ";;" + p.GetValue(this).ToString() + "\n";
             }
 
             //переведем в аски коды (чтобы исключить пробелы по три символа)
@@ -65,7 +65,7 @@ namespace SpyAppClasses
 
                 while ((prop = sr.ReadLine()) != null)
                 {
-                    var propPair = prop.Split(':');
+                    var propPair = prop.Split(new string[1] { ";;"}, StringSplitOptions.None);
 
                     Type propType = this.GetType()
                         .GetProperty(propPair[0]).PropertyType;

@@ -17,14 +17,22 @@ namespace SpyApp
         //всю информацию нужно писать в лог
         static void Main(string[] args)
         {
-            Console.WriteLine("Spy is app!");
             try
             {
                 SpyInfo info = new SpyInfo();
                 info.DeserializeFromString(args[0]);
+
+                var props = typeof(SpyInfo).GetProperties();
+                foreach(var p in props)
+                {
+
+                    Console.WriteLine(p.Name+":"+ typeof(SpyInfo).GetProperty(p.Name).GetValue(info));
+                }
+                Console.WriteLine("Spy is working!");
             }
             catch(Exception ex)
             {
+                Console.WriteLine("Error!");
                 Console.WriteLine(ex.Message);
             }
             Console.WriteLine("Press any key to close...");
