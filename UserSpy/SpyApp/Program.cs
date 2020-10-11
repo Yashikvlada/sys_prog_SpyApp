@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using SpyAppClasses;
@@ -11,10 +12,6 @@ namespace SpyApp
 {
     class Program
     {
-        //нужно получить от главного приложения (SpySettings) информацию (что сканировать, куда писать лог)
-        //приложение должно работать в фоновом режиме
-        //нужно как-то его отключать из главного приложения (SpySettings)
-        //всю информацию нужно писать в лог
         static void Main(string[] args)
         {
             try
@@ -29,6 +26,7 @@ namespace SpyApp
                     Console.WriteLine(p.Name+":"+ typeof(SpyInfo).GetProperty(p.Name).GetValue(info));
                 }
                 Console.WriteLine("Spy is working!");
+                ///тут работа spy
             }
             catch(Exception ex)
             {
@@ -37,6 +35,33 @@ namespace SpyApp
             }
             Console.WriteLine("Press any key to close...");
             Console.ReadLine();
+        }
+        class SpyApp
+        {
+            private SpyInfo _spyInfo;
+            public SpyApp(SpyInfo spyInfo)
+            {
+                _spyInfo = spyInfo;
+            }
+            /// <summary>
+            /// Запускаем Spy с учетом SpyInfo
+            /// </summary>
+            public void On()
+            {
+                Thread thr1 = new Thread(new ThreadStart(ProcessStats));
+                thr1.Start();
+
+                Thread thr2 = new Thread(new ThreadStart(PressedKeysStats));
+                thr2.Start();
+            }
+            private void ProcessStats()
+            {
+
+            }
+            private void PressedKeysStats()
+            {
+
+            }
         }
     }
 }

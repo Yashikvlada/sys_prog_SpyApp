@@ -12,7 +12,8 @@ namespace SpyAppClasses
 {
     public class SpyInfo
     {
-        public string ReportStats { get; set; } = string.Empty;
+        public string KeysStats { get; set; } = string.Empty;
+        public string ProcessesStats { get; set; } = string.Empty;
         public bool StatsOn { get; set; } = false;
 
         public string ReportModer { get; set; } = string.Empty;

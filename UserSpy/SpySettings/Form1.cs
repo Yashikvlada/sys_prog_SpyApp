@@ -132,9 +132,9 @@ namespace SpySettings
             _spyInfo.CloseBadApp = !radioButton_Statistics.Checked;
         }
 
-        private void textBox_stats_report_TextChanged(object sender, EventArgs e)
+        private void textBox_stats_keys_TextChanged(object sender, EventArgs e)
         {
-            _spyInfo.ReportStats = textBox_stats_report.Text;
+            _spyInfo.KeysStats = textBox_stats_keys.Text;
         }
 
         private void textBox_mod_report_TextChanged(object sender, EventArgs e)
@@ -151,6 +151,10 @@ namespace SpySettings
         {
             _spyInfo.BadAppsPath = textBox_bad_apps.Text;
         }
+        private void textBox_stats_proc_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.ProcessesStats = textBox_stats_proc.Text;
+        }
         private void FileDialog(object sender, EventArgs e)
         {
             using(OpenFileDialog fd=new OpenFileDialog())
@@ -162,7 +166,7 @@ namespace SpySettings
                     switch((sender as Button).Name)
                     {
                         case "button_stats_path":
-                            textBox_stats_report.Text=filePath;
+                            textBox_stats_keys.Text=filePath;
                             break;
                         case "button_mod_path":
                             textBox_mod_report.Text = filePath;
@@ -180,5 +184,7 @@ namespace SpySettings
                 }
             }
         }
+
+
     }
 }

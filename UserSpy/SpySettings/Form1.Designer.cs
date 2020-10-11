@@ -32,7 +32,7 @@
             this.button_start_stats = new System.Windows.Forms.Button();
             this.checkBox_stats_on = new System.Windows.Forms.CheckBox();
             this.checkBox_mod_on = new System.Windows.Forms.CheckBox();
-            this.textBox_stats_report = new System.Windows.Forms.TextBox();
+            this.textBox_stats_keys = new System.Windows.Forms.TextBox();
             this.label_stats_report = new System.Windows.Forms.Label();
             this.label_mod_report = new System.Windows.Forms.Label();
             this.textBox_mod_report = new System.Windows.Forms.TextBox();
@@ -40,13 +40,15 @@
             this.textBox_bad_words = new System.Windows.Forms.TextBox();
             this.label_bad_apps = new System.Windows.Forms.Label();
             this.textBox_bad_apps = new System.Windows.Forms.TextBox();
-            this.button_stats_path = new System.Windows.Forms.Button();
+            this.button_stats_keys = new System.Windows.Forms.Button();
             this.button_mod_path = new System.Windows.Forms.Button();
             this.button_badWords_path = new System.Windows.Forms.Button();
             this.button_badApps_path = new System.Windows.Forms.Button();
             this.button_stop_spy = new System.Windows.Forms.Button();
             this.radioButton_Disable = new System.Windows.Forms.RadioButton();
             this.radioButton_Statistics = new System.Windows.Forms.RadioButton();
+            this.button_stats_proc = new System.Windows.Forms.Button();
+            this.textBox_stats_proc = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_start_spy
@@ -91,13 +93,13 @@
             this.checkBox_mod_on.UseVisualStyleBackColor = true;
             this.checkBox_mod_on.CheckedChanged += new System.EventHandler(this.checkBox_mod_on_CheckedChanged);
             // 
-            // textBox_stats_report
+            // textBox_stats_keys
             // 
-            this.textBox_stats_report.Location = new System.Drawing.Point(82, 111);
-            this.textBox_stats_report.Name = "textBox_stats_report";
-            this.textBox_stats_report.Size = new System.Drawing.Size(252, 26);
-            this.textBox_stats_report.TabIndex = 4;
-            this.textBox_stats_report.TextChanged += new System.EventHandler(this.textBox_stats_report_TextChanged);
+            this.textBox_stats_keys.Location = new System.Drawing.Point(82, 111);
+            this.textBox_stats_keys.Name = "textBox_stats_keys";
+            this.textBox_stats_keys.Size = new System.Drawing.Size(252, 26);
+            this.textBox_stats_keys.TabIndex = 4;
+            this.textBox_stats_keys.TextChanged += new System.EventHandler(this.textBox_stats_keys_TextChanged);
             // 
             // label_stats_report
             // 
@@ -159,15 +161,15 @@
             this.textBox_bad_apps.TabIndex = 10;
             this.textBox_bad_apps.TextChanged += new System.EventHandler(this.textBox_bad_apps_TextChanged);
             // 
-            // button_stats_path
+            // button_stats_keys
             // 
-            this.button_stats_path.Location = new System.Drawing.Point(351, 109);
-            this.button_stats_path.Name = "button_stats_path";
-            this.button_stats_path.Size = new System.Drawing.Size(57, 32);
-            this.button_stats_path.TabIndex = 12;
-            this.button_stats_path.Text = "...";
-            this.button_stats_path.UseVisualStyleBackColor = true;
-            this.button_stats_path.Click += new System.EventHandler(this.FileDialog);
+            this.button_stats_keys.Location = new System.Drawing.Point(351, 109);
+            this.button_stats_keys.Name = "button_stats_keys";
+            this.button_stats_keys.Size = new System.Drawing.Size(57, 32);
+            this.button_stats_keys.TabIndex = 12;
+            this.button_stats_keys.Text = "...";
+            this.button_stats_keys.UseVisualStyleBackColor = true;
+            this.button_stats_keys.Click += new System.EventHandler(this.FileDialog);
             // 
             // button_mod_path
             // 
@@ -235,18 +237,38 @@
             this.radioButton_Statistics.UseVisualStyleBackColor = true;
             this.radioButton_Statistics.CheckedChanged += new System.EventHandler(this.radioButton_Statistics_CheckedChanged);
             // 
+            // button_stats_proc
+            // 
+            this.button_stats_proc.Location = new System.Drawing.Point(351, 147);
+            this.button_stats_proc.Name = "button_stats_proc";
+            this.button_stats_proc.Size = new System.Drawing.Size(57, 32);
+            this.button_stats_proc.TabIndex = 19;
+            this.button_stats_proc.Text = "...";
+            this.button_stats_proc.UseVisualStyleBackColor = true;
+            this.button_stats_proc.Click += new System.EventHandler(this.FileDialog);
+            // 
+            // textBox_stats_proc
+            // 
+            this.textBox_stats_proc.Location = new System.Drawing.Point(81, 150);
+            this.textBox_stats_proc.Name = "textBox_stats_proc";
+            this.textBox_stats_proc.Size = new System.Drawing.Size(252, 26);
+            this.textBox_stats_proc.TabIndex = 20;
+            this.textBox_stats_proc.TextChanged += new System.EventHandler(this.textBox_stats_proc_TextChanged);
+            // 
             // Form_spySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 571);
+            this.Controls.Add(this.textBox_stats_proc);
+            this.Controls.Add(this.button_stats_proc);
             this.Controls.Add(this.radioButton_Statistics);
             this.Controls.Add(this.radioButton_Disable);
             this.Controls.Add(this.button_stop_spy);
             this.Controls.Add(this.button_badApps_path);
             this.Controls.Add(this.button_badWords_path);
             this.Controls.Add(this.button_mod_path);
-            this.Controls.Add(this.button_stats_path);
+            this.Controls.Add(this.button_stats_keys);
             this.Controls.Add(this.label_bad_apps);
             this.Controls.Add(this.textBox_bad_apps);
             this.Controls.Add(this.label_bad_words);
@@ -254,7 +276,7 @@
             this.Controls.Add(this.label_mod_report);
             this.Controls.Add(this.textBox_mod_report);
             this.Controls.Add(this.label_stats_report);
-            this.Controls.Add(this.textBox_stats_report);
+            this.Controls.Add(this.textBox_stats_keys);
             this.Controls.Add(this.checkBox_mod_on);
             this.Controls.Add(this.checkBox_stats_on);
             this.Controls.Add(this.button_start_stats);
@@ -272,7 +294,7 @@
         private System.Windows.Forms.Button button_start_stats;
         private System.Windows.Forms.CheckBox checkBox_stats_on;
         private System.Windows.Forms.CheckBox checkBox_mod_on;
-        private System.Windows.Forms.TextBox textBox_stats_report;
+        private System.Windows.Forms.TextBox textBox_stats_keys;
         private System.Windows.Forms.Label label_stats_report;
         private System.Windows.Forms.Label label_mod_report;
         private System.Windows.Forms.TextBox textBox_mod_report;
@@ -280,13 +302,15 @@
         private System.Windows.Forms.TextBox textBox_bad_words;
         private System.Windows.Forms.Label label_bad_apps;
         private System.Windows.Forms.TextBox textBox_bad_apps;
-        private System.Windows.Forms.Button button_stats_path;
+        private System.Windows.Forms.Button button_stats_keys;
         private System.Windows.Forms.Button button_mod_path;
         private System.Windows.Forms.Button button_badWords_path;
         private System.Windows.Forms.Button button_badApps_path;
         private System.Windows.Forms.Button button_stop_spy;
         private System.Windows.Forms.RadioButton radioButton_Disable;
         private System.Windows.Forms.RadioButton radioButton_Statistics;
+        private System.Windows.Forms.Button button_stats_proc;
+        private System.Windows.Forms.TextBox textBox_stats_proc;
     }
 }
 
