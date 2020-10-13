@@ -61,8 +61,8 @@ namespace SpyApp
                 Thread thr1 = new Thread(new ThreadStart(ProcessStats));
                 thr1.Start();
 
-                //Thread thr2 = new Thread(new ThreadStart(PressedKeysStats));
-                //thr2.Start();
+                Thread thr2 = new Thread(new ThreadStart(PressedKeysStats));
+                thr2.Start();
             }
             private void ProcessStats()
             {
@@ -136,7 +136,7 @@ namespace SpyApp
             }
             private void PressedKeysStats()
             {
-
+              //нажатые клавиши
             }
         }
     }
