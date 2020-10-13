@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpyAppClasses", "SpyAppClas
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KBHOOKPROC", "KBHOOKPROC\KBHOOKPROC.vcxproj", "{AACD49D7-C957-49BC-B23A-C00691103741}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SETKBHOOK", "SETKBHOOK\SETKBHOOK.vcxproj", "{B85B82F4-A69A-44B9-858F-BD24B947FA7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,16 @@ Global
 		{AACD49D7-C957-49BC-B23A-C00691103741}.Release|x64.Build.0 = Release|x64
 		{AACD49D7-C957-49BC-B23A-C00691103741}.Release|x86.ActiveCfg = Release|Win32
 		{AACD49D7-C957-49BC-B23A-C00691103741}.Release|x86.Build.0 = Release|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Debug|x64.ActiveCfg = Debug|x64
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Debug|x64.Build.0 = Debug|x64
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Debug|x86.ActiveCfg = Debug|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Debug|x86.Build.0 = Debug|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Release|x64.ActiveCfg = Release|x64
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Release|x64.Build.0 = Release|x64
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Release|x86.ActiveCfg = Release|Win32
+		{B85B82F4-A69A-44B9-858F-BD24B947FA7B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
