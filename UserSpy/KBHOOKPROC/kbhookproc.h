@@ -1,14 +1,10 @@
-#ifdef KBHOOKPROC_EXPORTS
 #define KBHOOKPROC_API __declspec(dllexport)
-#else
-#define KBHOOKPROC_API __declspec(dllimport)
-#endif
 
 #ifndef KBHOOKPROC_H_
 #define KBHOOKPROC_H_
 
 #include<Windows.h>
-////#include<iostream>
+#include<iostream>
 #include <fstream>
 #include <chrono>
 #include <ctime>

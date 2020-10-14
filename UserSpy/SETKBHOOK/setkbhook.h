@@ -1,8 +1,4 @@
-#ifdef SETKBHOOK_EXPORTS
 #define SETKBHOOK_API __declspec(dllexport)
-#else
-#define SETKBHOOK_API __declspec(dllimport)
-#endif
 
 #ifndef SETKBHOOK_H_
 #define SETKBHOOK_H_

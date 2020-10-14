@@ -16,7 +16,7 @@ extern "C" SETKBHOOK_API void StartMonitKeys(char* statsPath, char* modPath, cha
 		setStatsPath(statsPath);
 		auto setModPath = (FNCSETSTR)GetProcAddress(hDLL, "SetModPath");
 		setModPath(modPath);
-		auto setBadWords = (FNCSETSTR)GetProcAddress(hDLL, "SetBadWords");
+		auto setBadWords = (FNCSETSTR)GetProcAddress(hDLL, "SetBadWordsPath");
 		setBadWords(badWords);
 
 
