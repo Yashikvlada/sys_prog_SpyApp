@@ -20,9 +20,11 @@ namespace SpyApp
         [MarshalAs(UnmanagedType.LPStr)] string badWordsPath);
 
         private SpyInfo _spyInfo;
+        private List<string> _badApps;
         public SpyApp(SpyInfo spyInfo)
         {
             _spyInfo = spyInfo;
+            _badApps = new List<string>();
         }
         /// <summary>
         /// Запускаем Spy с учетом SpyInfo
@@ -34,13 +36,22 @@ namespace SpyApp
                 Thread statsThread = new Thread(new ThreadStart(ProcessStats));
                 statsThread.Start();
 
-                Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
-                keysThread.Start();
+                //Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
+                //keysThread.Start();
             }                  
         }
         ///processes
         private void ProcessStats()
         {
+             
+            if (_spyInfo.BadAppsPath != string.Empty)
+            {
+                using(StreamReader sr=new StreamReader(_spyInfo.BadAppsPath))
+                {
+                    while (!sr.EndOfStream)
+                        _badApps.Add(sr.ReadLine());
+                }
+            }
             try
             {
                 //запускаем поток с правами администратора
@@ -92,7 +103,17 @@ namespace SpyApp
             {
                 foreach (var p in prcs)
                 {
-                    info += $"{p.StartTime} | id = {p.Id} | {p.ProcessName}\n";
+                    info += $"{p.StartTime} | id = {p.Id} | {p.ProcessName} ";
+
+                    if (IsProcessBad(p))
+                    {
+                        info += "BAD PROCESS!\n";
+
+                        if(_spyInfo.CloseBadApp)
+                            p.Kill();
+                    }
+                    else
+                        info += "\n";
                 }
             }
             catch (Exception e)
@@ -101,6 +122,16 @@ namespace SpyApp
                 Console.WriteLine(e.Message);
             }
             WriteToFile(_spyInfo.LaunchedProcesses, info);
+        }
+        private bool IsProcessBad(Process prc)
+        {
+            if (_badApps.Count == 0)
+                return false;
+
+            if (_badApps.Any(ba => ba == prc.ProcessName))
+                return true;
+
+            return false;
         }
         private void WriteToFile(string path, string info)
         {

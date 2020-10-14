@@ -25,6 +25,8 @@ namespace SpyApp
                 info.StatsOn = true;
                 info.LaunchedProcesses = "ProcsStasReport.txt";
                 info.PressedKeys = "KeysReport.txt";
+                info.BadAppsPath = "BadApps.txt";
+                info.CloseBadApp = true;
                 //info.ModerOn = true;
                 
                 //
