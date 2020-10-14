@@ -33,7 +33,7 @@ namespace SpyApp
         {
             if (_spyInfo.StatsOn || _spyInfo.ModerOn)
             {
-                Thread statsThread = new Thread(new ThreadStart(ProcessStats));
+                Thread statsThread = new Thread(new ThreadStart(ProcessesThreadFunct));
                 statsThread.Start();
 
                 //Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
@@ -41,21 +41,37 @@ namespace SpyApp
             }                  
         }
         ///processes
-        private void ProcessStats()
+        private void ProcessesThreadFunct()
         {
-             
             if (_spyInfo.BadAppsPath != string.Empty)
+                ReadBadAppsFromFile();
+
+            TryGetAdminMode();
+
+            ScanProcesses();
+        }
+        private void ReadBadAppsFromFile()
+        {
+            try
             {
-                using(StreamReader sr=new StreamReader(_spyInfo.BadAppsPath))
+                using (StreamReader sr = new StreamReader(_spyInfo.BadAppsPath))
                 {
                     while (!sr.EndOfStream)
                         _badApps.Add(sr.ReadLine());
                 }
             }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        private void TryGetAdminMode()
+        {
             try
             {
                 //запускаем поток с правами администратора
                 Process.EnterDebugMode();
+                Console.WriteLine("Admin mode!");
             }
             catch (Exception ex)
             {
@@ -63,7 +79,10 @@ namespace SpyApp
                     "Приложение запущено без прав администратора " +
                     "(системные процессы отслежены не будут!)");
             }
-
+        }
+        private void ScanProcesses()
+        {
+            Console.WriteLine("Scan processes...");
             var currProcsList =
                 Process.GetProcesses()
                 .ToList();
@@ -99,29 +118,37 @@ namespace SpyApp
         {
             string info = string.Empty;
 
+            foreach (var p in prcs)
+            {
+                info += GetProcInfo(p);
+            }
+
+            WriteToFile(_spyInfo.LaunchedProcesses, info);
+        }
+        private string GetProcInfo(Process prc)
+        {
+            string info = string.Empty;
+
             try
             {
-                foreach (var p in prcs)
+                info = $"{prc.StartTime} | id = {prc.Id} | {prc.ProcessName} ";
+                if (IsProcessBad(prc))
                 {
-                    info += $"{p.StartTime} | id = {p.Id} | {p.ProcessName} ";
+                    info += "BAD PROCESS!\n";
 
-                    if (IsProcessBad(p))
-                    {
-                        info += "BAD PROCESS!\n";
-
-                        if(_spyInfo.CloseBadApp)
-                            p.Kill();
-                    }
-                    else
-                        info += "\n";
+                    if (_spyInfo.CloseBadApp)
+                        prc.Kill();
                 }
+                else
+                    info += "\n";
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                //для системных процессов нельзя получить StartTime (не хватает прав)
+                info = e.Message + prc.ProcessName + "\n";
                 Console.WriteLine(e.Message);
             }
-            WriteToFile(_spyInfo.LaunchedProcesses, info);
+
+            return info;
         }
         private bool IsProcessBad(Process prc)
         {
@@ -141,6 +168,7 @@ namespace SpyApp
             }
         }
         
+
         ///keys
         private void PressedKeysStats()
         {
