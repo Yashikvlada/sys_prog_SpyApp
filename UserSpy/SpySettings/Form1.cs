@@ -134,12 +134,12 @@ namespace SpySettings
 
         private void textBox_stats_keys_TextChanged(object sender, EventArgs e)
         {
-            _spyInfo.KeysStats = textBox_stats_keys.Text;
+            _spyInfo.PressedKeys = textBox_stats_keys.Text;
         }
 
         private void textBox_mod_report_TextChanged(object sender, EventArgs e)
         {
-            _spyInfo.ReportModer = textBox_mod_report.Text;
+            _spyInfo.TypedBadWords = textBox_mod_report.Text;
         }
 
         private void textBox_bad_words_TextChanged(object sender, EventArgs e)
@@ -153,7 +153,7 @@ namespace SpySettings
         }
         private void textBox_stats_proc_TextChanged(object sender, EventArgs e)
         {
-            _spyInfo.ProcessesStats = textBox_stats_proc.Text;
+            _spyInfo.LaunchedProcesses = textBox_stats_proc.Text;
         }
         private void FileDialog(object sender, EventArgs e)
         {

