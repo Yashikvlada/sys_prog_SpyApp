@@ -12,14 +12,13 @@ namespace SpyAppClasses
 {
     public class SpyInfo
     {
-        public string ReportStats { get; set; } = string.Empty;
-        public bool StatsOn { get; set; } = false;
+        public string WhereToWriteKeys { get; set; } = string.Empty;
+        public string WhereToWriteWords { get; set; } = string.Empty;
+        public string WhereToReadBadWords { get; set; } = string.Empty;
 
-        public string ReportModer { get; set; } = string.Empty;
-        public bool ModerOn { get; set; } = false;
-        public string BadWordsPath { get; set; } = string.Empty;
-        public string BadAppsPath { get; set; } = string.Empty;
-        public bool CloseBadApp { get; set; } = false;
+        public string WhereToWriteProcs { get; set; } = string.Empty;
+        public string WhereToReadBadApps { get; set; } = string.Empty;
+        public bool IsCloseBadApp { get; set; } = false;
 
         public string SerializeToString()
         {
