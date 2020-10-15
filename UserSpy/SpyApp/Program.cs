@@ -19,16 +19,16 @@ namespace SpyApp
             try
             {
                 SpyInfo info = new SpyInfo();
-                //info.DeserializeFromString(args[0]);
+                info.DeserializeFromString(args[0]);
 
                 //тестовый набор
-                info.StatsOn = true;
-                info.LaunchedProcesses = "ProcsStasReport.txt";
-                info.PressedKeys = "KeysReport.txt";
-                info.BadAppsPath = "BadApps.txt";
-                info.CloseBadApp = true;
-                //info.ModerOn = true;
-                
+                //info.WhereToWriteProcs = "ProcsStasReport.txt";
+                //info.WhereToReadBadApps = "BadApps.txt";
+                //info.IsCloseBadApp = true;
+
+                //info.WhereToWriteKeys = "KeysReport.txt";
+                //info.WhereToReadBadWords = "BadWords.txt";
+                //info.WhereToWriteWords = "BadWordsReport.txt";             
                 //
 
                 var props = typeof(SpyInfo).GetProperties();

