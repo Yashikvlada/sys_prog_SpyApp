@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpyAppClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,38 +13,98 @@ using System.Windows.Forms;
 
 namespace SpyStats
 {
-    //приложение со статистикой, нужно считывать два файла (или 1 или 0)
-    //и записывать результат в поле textBox_log
     //приложение должно получать информацию (путь отчетов) от основного приложения (SpySettings)
     public partial class Form_stats : Form
     {
         //нужен класс для записи/чтения статистики
-        private string _statsPath;
-        private string _moderingPath;
-        public Form_stats()
+        private SpyInfo _spyInfo;
+        //private List<FileStream> _fsList = new List<FileStream>();
+        //private List<StreamReader> _srList = new List<StreamReader>();
+        private bool _isOpen = true;
+        public Form_stats(SpyInfo info)
         {
-            InitializeComponent();
+            _spyInfo = info;
 
-            //в новом потоке (иначе окно не запустится, т к мы в конструкторе)
-            Thread newThread = 
-                new Thread(new ThreadStart(ScanFilesThread));
-            newThread.Start();
+            //тестовый набор
+            //_spyInfo.WhereToWriteBadProcs = "111.txt";
+
+            InitializeComponent();  
+
+            AddTabs();
+
+            //Thread scanThread = new Thread(new ThreadStart(ScanFiles));
+            //scanThread.Start();
+            ScanFiles();
+            this.FormClosed += Form_stats_FormClosed;
         }
 
-        private void ScanFilesThread()
+        private void Form_stats_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //string testPath = "testlog.txt";
-            //try
-            //{
-            //   using(FileStream sr=new FileStream(testPath,FileMode.OpenOrCreate))
-            //    {
-                
-            //    }
-            //}
-            //catch(Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            _isOpen = false;
         }
+
+        private void AddTabs()
+        {
+            AddOneTab(_spyInfo.WhereToWriteBadProcs);
+            AddOneTab(_spyInfo.WhereToWriteKeys);
+            AddOneTab(_spyInfo.WhereToWriteProcs);
+            AddOneTab(_spyInfo.WhereToWriteWords);
+        }
+        private void AddOneTab(string tabName)
+        {
+            if (tabName != "")
+            {
+                TabPage newTab = new TabPage(tabName);
+
+                TextBox report = new TextBox();
+                report.ReadOnly = true;
+                report.Multiline = true;
+                report.ScrollBars = ScrollBars.Both;
+                report.Dock = DockStyle.Fill;
+
+                newTab.Controls.Add(report);
+                tabControl_main.TabPages.Add(newTab);
+            }
+        }
+        private void ScanFiles()
+        {
+            foreach (TabPage t in tabControl_main.TabPages)
+            {
+                Thread newFile = new Thread(
+                    new ParameterizedThreadStart(ReadFileThread));
+                newFile.Start(t);
+            }
+        }
+        private void ReadFileThread(object t)
+        {
+            var tabPage = t as TabPage;
+            var fileName = (TextBox)tabPage.Controls[0];
+
+            //FileStream fs = null;
+            //_fsList.Add(fs);
+            //StreamReader sr = null;
+            //_srList.Add(sr);
+
+            try
+            {
+                while (_isOpen)
+                {
+                    using (var fs = new FileStream(tabPage.Text, FileMode.Open,
+                               FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        using(var sr=new StreamReader(fs))
+                        {
+                            fileName.Text = sr.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
     }
 }

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SpyAppClasses;
@@ -25,7 +26,7 @@ namespace SpySettings
 
         private Process _procStatsApp;
         private string _statsAppName;
-
+        private bool _isOpen = true;
         public Form_spySettings()
         {
             InitializeComponent();
@@ -40,14 +41,42 @@ namespace SpySettings
 
             _procSpyApp = new Process();
             _procSpyApp.StartInfo = new ProcessStartInfo(spyAppPath);
-            //_procSpyApp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            _procSpyApp.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             _statsAppName = "SpyStats";
             string statsAppPath = thisAppPath + "\\" + _statsAppName + ".exe";
             _procStatsApp = new Process();
             _procStatsApp.StartInfo = new ProcessStartInfo(statsAppPath);
+
+            Thread spyAppStatus = 
+                new Thread(new ThreadStart(SpyAppProcStatus));
+            spyAppStatus.Start();
+
+            this.FormClosed += Form_spySettings_FormClosed;
         }
 
+        private void Form_spySettings_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _isOpen = false;
+        }
+
+        private void SpyAppProcStatus()
+        {
+            while (_isOpen)
+            {
+                if (Process.GetProcesses()
+                    .Any(p => p.ProcessName == _spyAppName))
+                {
+                    label_onOff.Text = "SPY ON";
+                    label_onOff.BackColor = Color.DarkGreen;
+                }
+                else
+                {
+                    label_onOff.Text = "SPY OFF";
+                    label_onOff.BackColor = Color.DarkRed;
+                }
+            }
+        }
         private void button_start_spy_Click(object sender, EventArgs e)
         {
             //тут запускаем SpyApp

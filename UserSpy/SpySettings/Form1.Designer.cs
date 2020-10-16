@@ -53,11 +53,12 @@
             this.label_badProc_report = new System.Windows.Forms.Label();
             this.button_badProc_report = new System.Windows.Forms.Button();
             this.textBox_badProc_report = new System.Windows.Forms.TextBox();
+            this.label_onOff = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button_start_spy
             // 
-            this.button_start_spy.Location = new System.Drawing.Point(405, 16);
+            this.button_start_spy.Location = new System.Drawing.Point(405, 81);
             this.button_start_spy.Name = "button_start_spy";
             this.button_start_spy.Size = new System.Drawing.Size(148, 51);
             this.button_start_spy.TabIndex = 0;
@@ -67,7 +68,7 @@
             // 
             // button_start_stats
             // 
-            this.button_start_stats.Location = new System.Drawing.Point(405, 175);
+            this.button_start_stats.Location = new System.Drawing.Point(405, 240);
             this.button_start_stats.Name = "button_start_stats";
             this.button_start_stats.Size = new System.Drawing.Size(148, 51);
             this.button_start_stats.TabIndex = 1;
@@ -77,7 +78,7 @@
             // 
             // button_stop_spy
             // 
-            this.button_stop_spy.Location = new System.Drawing.Point(405, 79);
+            this.button_stop_spy.Location = new System.Drawing.Point(405, 144);
             this.button_stop_spy.Name = "button_stop_spy";
             this.button_stop_spy.Size = new System.Drawing.Size(148, 51);
             this.button_stop_spy.TabIndex = 16;
@@ -313,11 +314,23 @@
             this.textBox_badProc_report.TabIndex = 36;
             this.textBox_badProc_report.TextChanged += new System.EventHandler(this.textBox_badProc_report_TextChanged);
             // 
+            // label_onOff
+            // 
+            this.label_onOff.AutoSize = true;
+            this.label_onOff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label_onOff.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_onOff.Location = new System.Drawing.Point(405, 9);
+            this.label_onOff.Name = "label_onOff";
+            this.label_onOff.Size = new System.Drawing.Size(115, 38);
+            this.label_onOff.TabIndex = 39;
+            this.label_onOff.Text = "On-Off";
+            // 
             // Form_spySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(580, 683);
+            this.ClientSize = new System.Drawing.Size(584, 683);
+            this.Controls.Add(this.label_onOff);
             this.Controls.Add(this.label_badProc_report);
             this.Controls.Add(this.button_badProc_report);
             this.Controls.Add(this.textBox_badProc_report);
@@ -377,6 +390,7 @@
         private System.Windows.Forms.Label label_badProc_report;
         private System.Windows.Forms.Button button_badProc_report;
         private System.Windows.Forms.TextBox textBox_badProc_report;
+        private System.Windows.Forms.Label label_onOff;
     }
 }
 
