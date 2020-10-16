@@ -17,6 +17,7 @@ namespace SpyAppClasses
         public string WhereToReadBadWords { get; set; } = string.Empty;
 
         public string WhereToWriteProcs { get; set; } = string.Empty;
+        public string WhereToWriteBadProcs { get; set; } = string.Empty;
         public string WhereToReadBadApps { get; set; } = string.Empty;
         public bool IsCloseBadApp { get; set; } = false;
 

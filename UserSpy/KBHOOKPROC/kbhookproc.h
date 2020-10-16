@@ -32,14 +32,16 @@ private:
 	std::vector<std::string> _badWordsList;
 	std::string _currWord;
 	bool _isWordAnalysis;
+	bool _isLogAllKeys;
 
 	WordOfVkeys():
 		_whereToWriteKeys(""),
 		_whereToWriteWords(""),
 		_whereToReadBadWords(""),
 		_currWord(""),
-		_isWordAnalysis(true){
-
+		_isWordAnalysis(true),
+		_isLogAllKeys(true) {
+		
 	}
 public:
 	static WordOfVkeys* GetInstance() {
@@ -50,6 +52,8 @@ public:
 	}
 	void SetWhereToWriteKeys(std::string path){
 		_whereToWriteKeys = path;
+
+		_isLogAllKeys = !_whereToWriteKeys._Equal("");
 	}
 	void SetWhereToWriteWords(std::string path) {
 		_whereToWriteWords = path;

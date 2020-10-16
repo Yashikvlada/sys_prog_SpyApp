@@ -50,7 +50,7 @@ namespace SpySettings
 
         private void button_start_spy_Click(object sender, EventArgs e)
         {
-            //тут запускаем SpyApp и передаем ему _selectedCommands
+            //тут запускаем SpyApp
 
             //проверяем вдруг файл отсутствует
             if (!File.Exists(_procSpyApp.StartInfo.FileName)) 
@@ -112,64 +112,6 @@ namespace SpySettings
                 p.Kill();
         }
 
-        private void checkBox_stats_on_CheckedChanged(object sender, EventArgs e)
-        {
-            //_spyInfo.WhereToWriteKeys = string.Empty;
-            if (!checkBox_stats_on.Checked)
-            {
-                textBox_stats_keys.Text = string.Empty;
-                textBox_stats_proc.Text = string.Empty;
-            }
-            button_stats_keys.Enabled = checkBox_stats_on.Checked;
-            button_stats_proc.Enabled = checkBox_stats_on.Checked;
-        }
-
-        private void checkBox_mod_on_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!checkBox_mod_on.Checked)
-            {
-                textBox_mod_report.Text = string.Empty;
-                textBox_bad_apps.Text = string.Empty;
-                textBox_bad_words.Text = string.Empty;
-            }
-            button_mod_path.Enabled = checkBox_mod_on.Checked;
-            button_badApps_path.Enabled = checkBox_mod_on.Checked;
-            button_badWords_path.Enabled = checkBox_mod_on.Checked;
-        }
-
-        private void radioButton_Disable_CheckedChanged(object sender, EventArgs e)
-        {
-            _spyInfo.IsCloseBadApp = radioButton_Disable.Checked;
-        }
-
-        private void radioButton_Statistics_CheckedChanged(object sender, EventArgs e)
-        {
-            _spyInfo.IsCloseBadApp = !radioButton_Statistics.Checked;
-        }
-
-        private void textBox_stats_keys_TextChanged(object sender, EventArgs e)
-        {
-            _spyInfo.WhereToWriteKeys = textBox_stats_keys.Text;
-        }
-
-        private void textBox_mod_report_TextChanged(object sender, EventArgs e)
-        {
-            _spyInfo.WhereToWriteWords = textBox_mod_report.Text;
-        }
-
-        private void textBox_bad_words_TextChanged(object sender, EventArgs e)
-        {
-            _spyInfo.WhereToReadBadWords = textBox_bad_words.Text;
-        }
-
-        private void textBox_bad_apps_TextChanged(object sender, EventArgs e)
-        {
-            _spyInfo.WhereToReadBadApps = textBox_bad_apps.Text;
-        }
-        private void textBox_stats_proc_TextChanged(object sender, EventArgs e)
-        {
-            _spyInfo.WhereToWriteProcs = textBox_stats_proc.Text;
-        }
         private void FileDialog(object sender, EventArgs e)
         {
             using(OpenFileDialog fd=new OpenFileDialog())
@@ -180,26 +122,100 @@ namespace SpySettings
                    
                     switch((sender as Button).Name)
                     {
-                        case "button_stats_path":
-                            textBox_stats_keys.Text=filePath;
+                        case "button_proc_report":
+                            textBox_proc_report.Text = filePath;
                             break;
-                        case "button_mod_path":
-                            textBox_mod_report.Text = filePath;
-                            ;
+                        case "button_keys_report":
+                            textBox_keys_report.Text = filePath;
                             break;
-                        case "button_badWords_path":
-                            textBox_bad_words.Text = filePath;
-                            ;
-                            break;
-                        case "button_badApps_path":
+                        case "button_bad_apps":
                             textBox_bad_apps.Text = filePath;
-                            ;
+                            break;
+                        case "button_bad_words":
+                            textBox_bad_words.Text = filePath;
+                            break;
+                        case "button_badWords_report":
+                            textBox_badWords_report.Text = filePath;
+                            break;
+                        case "button_badProc_report":
+                            textBox_badProc_report.Text = filePath;
                             break;
                     }
                 }
             }
         }
 
+        private void checkBox_proc_report_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox_proc_report.Enabled = checkBox_proc_report.Checked;
+            textBox_proc_report.Text = "";
+            button_proc_report.Enabled = checkBox_proc_report.Checked;
+        }
+        private void checkBox_keys_report_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox_keys_report.Enabled = checkBox_keys_report.Checked;
+            textBox_keys_report.Text = "";
+            button_keys_report.Enabled = checkBox_keys_report.Checked;
+        }
+        private void checkBox_proc_analys_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox_bad_apps.Enabled = checkBox_proc_analys.Checked;
+            textBox_bad_apps.Text = "";
+            button_bad_apps.Enabled = checkBox_proc_analys.Checked;
 
+            textBox_badProc_report.Enabled = checkBox_proc_analys.Checked;
+            textBox_badProc_report.Text = "";
+            button_badProc_report.Enabled = checkBox_proc_analys.Checked;
+
+            radioButton_badApp_close.Enabled = checkBox_proc_analys.Checked;
+            radioButton_badApp_stats.Enabled = checkBox_proc_analys.Checked;
+        }
+        private void checkBox_keys_analys_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox_bad_words.Enabled = checkBox_keys_analys.Checked;
+            textBox_bad_words.Text = "";
+            button_bad_words.Enabled = checkBox_keys_analys.Checked;
+            textBox_badWords_report.Enabled = checkBox_keys_analys.Checked;
+            textBox_badWords_report.Text = "";
+            button_badWords_report.Enabled = checkBox_keys_analys.Checked;
+        }
+
+        private void textBox_proc_report_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToWriteProcs = textBox_proc_report.Text;
+        }
+        private void textBox_keys_report_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToWriteKeys = textBox_keys_report.Text;
+        }
+        private void textBox_bad_apps_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToReadBadApps = textBox_bad_apps.Text;
+        }
+
+        private void radioButton_badApp_close_CheckedChanged(object sender, EventArgs e)
+        {
+            _spyInfo.IsCloseBadApp = radioButton_badApp_close.Checked;
+        }
+
+        private void radioButton_badApp_stats_CheckedChanged(object sender, EventArgs e)
+        {
+            _spyInfo.IsCloseBadApp = !radioButton_badApp_stats.Checked;
+        }
+
+        private void textBox_bad_words_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToReadBadWords = textBox_bad_words.Text;
+        }
+
+        private void textBox_badWords_report_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToWriteWords = textBox_badWords_report.Text;
+        }
+
+        private void textBox_badProc_report_TextChanged(object sender, EventArgs e)
+        {
+            _spyInfo.WhereToWriteBadProcs = textBox_badProc_report.Text;
+        }
     }
 }

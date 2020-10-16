@@ -28,7 +28,7 @@ namespace SpyApp
 
                 //info.WhereToWriteKeys = "KeysReport.txt";
                 //info.WhereToReadBadWords = "BadWords.txt";
-                //info.WhereToWriteWords = "BadWordsReport.txt";             
+                //info.WhereToWriteWords = "BadWordsReport.txt";
                 //
 
                 var props = typeof(SpyInfo).GetProperties();

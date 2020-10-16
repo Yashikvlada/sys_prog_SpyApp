@@ -32,18 +32,18 @@ namespace SpyStats
 
         private void ScanFilesThread()
         {
-            string testPath = "testlog.txt";
-            try
-            {
-               using(FileStream sr=new FileStream(testPath,FileMode.OpenOrCreate))
-                {
+            //string testPath = "testlog.txt";
+            //try
+            //{
+            //   using(FileStream sr=new FileStream(testPath,FileMode.OpenOrCreate))
+            //    {
                 
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
     }
 }
