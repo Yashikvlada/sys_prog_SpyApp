@@ -89,7 +89,7 @@ namespace SpyStats
             {
                 while (_isOpen)
                 {
-                    using (var fs = new FileStream(tabPage.Text, FileMode.Open,
+                    using (var fs = new FileStream(tabPage.Text, FileMode.OpenOrCreate,
                                FileAccess.Read, FileShare.ReadWrite))
                     {
                         using(var sr=new StreamReader(fs))
