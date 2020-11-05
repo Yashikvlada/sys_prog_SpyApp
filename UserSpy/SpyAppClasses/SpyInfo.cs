@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 //dll с классами
 namespace SpyAppClasses
 {
+    //представление путей отчетов и настроек в виде строки;
+    //необходим для передачи в другое приложение (в виде аргументов),
+    //поэтому нельзя допустить пробелы.
+    //преобразуем в аски коды (трехразрядные напр: 123,002,023, чтобы лечге было читать)
+    //свойства сериализуются автоматически (поддерживаются типы с методом Parse и тип string)
     public class SpyInfo
     {
         public string WhereToWriteKeys { get; set; } = string.Empty;
@@ -21,7 +26,19 @@ namespace SpyAppClasses
         public string WhereToReadBadApps { get; set; } = string.Empty;
         public bool IsCloseBadApp { get; set; } = false;
 
+        //автоматически считываем все свойства класса SpyInfo 
+        //(нет необходимости редактирвоать метод SerializeToString при добавлении нового)
+        //свойство1;;значение1\n
+        //свойство2;;значение2\n
         public string SerializeToString()
+        {
+            string resStr = ConvertPropsTotring();
+
+            string resASCII = ConvertSymbolsToASCII(resStr);
+
+            return resASCII;
+        }
+        private string ConvertPropsTotring()
         {
             string resStr = string.Empty;
 
@@ -30,9 +47,12 @@ namespace SpyAppClasses
             {
                 resStr += p.Name + ";;" + p.GetValue(this).ToString() + "\n";
             }
-
-            //переведем в аски коды (чтобы исключить пробелы по три символа)
+            return resStr;
+        }
+        private string ConvertSymbolsToASCII(string resStr)
+        {
             string resASCII = string.Empty;
+
             foreach (var s in resStr)
             {
                 string code = ((int)s).ToString();
@@ -42,60 +62,65 @@ namespace SpyAppClasses
 
                 resASCII += code;
             }
-
             return resASCII;
         }
-
-        /// <summary>Unsafe method! Pls use try-catch section!</summary>
+        
+        /// <summary>Нужен try-catch</summary>
         /// <exception cref="FormatException"></exception>
         /// <exception cref="IndexOutOfRangeException"></exception>
         /// <exception cref="AmbiguousMatchException"></exception>
         public void DeserializeFromString(string data)
         {
-            string info = string.Empty;
-            for(int i = 0; i < data.Length; i += 3)
-            {
-                char code = (char)int.Parse(data.Substring(i, 3));
-                info += code;
-            }
+            string info = ConvertASCIIToSymbols(data);
+
             //парсим
-            using(StringReader sr = new StringReader(info))
+            using (StringReader sr = new StringReader(info))
             {
-                string prop;
+                // nameProp;;valProp
+                string propLine;
 
-                while ((prop = sr.ReadLine()) != null)
+                while ((propLine = sr.ReadLine()) != null)
                 {
-                    var propPair = prop.Split(new string[1] { ";;"}, StringSplitOptions.None);
+                    var propPair = propLine.Split(new string[1] { ";;"}, StringSplitOptions.None);
 
+                    //определяем тип нужного свойства
                     Type propType = this.GetType()
                         .GetProperty(propPair[0]).PropertyType;
-                    //Console.WriteLine(propType);
 
-                    object propVal;
-                    if (propType == typeof(string))
-                    {
-                        propVal = propPair[1];
-                    }
-                    else
-                    {
-                        propVal = Activator.CreateInstance(propType);
-                    }
+                    object propVal = SetValueToObj(propType, propPair[1]);
                     
-                    if (propType == typeof(string))
-                    {
-                        propVal = propPair[1];
-                    }
-                    else
-                    {
-                        propVal = propType.GetMethod("Parse").Invoke(propType, new object[1] {propPair[1]});
-                    }
-               
+                    // устанавливаем значение в текущий объект
                     this.GetType()
                         .GetProperty(propPair[0])
                         .SetValue(this, propVal);
                     
                 }
             }
+        }
+        private string ConvertASCIIToSymbols(string data)
+        {
+            string info = string.Empty;
+            for (int i = 0; i < data.Length; i += 3)
+            {
+                char code = (char)int.Parse(data.Substring(i, 3));
+                info += code;
+            }
+            return info;
+        }        
+        private object SetValueToObj(Type valType, string value)
+        {
+            object propVal;
+            //у string нет метода parse
+            if (valType == typeof(string))
+            {
+                propVal = value;
+            }
+            else
+            {
+                propVal = valType.GetMethod("Parse").Invoke(valType, new object[1] { value });
+            }
+            
+            return propVal;
         }
     }
     
