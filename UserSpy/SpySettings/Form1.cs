@@ -177,13 +177,13 @@ namespace SpySettings
         private void checkBox_proc_report_CheckedChanged(object sender, EventArgs e)
         {
             textBox_proc_report.Enabled = checkBox_proc_report.Checked;
-            textBox_proc_report.Text = "";
+            textBox_proc_report.Text = "runnedProcs.txt";
             button_proc_report.Enabled = checkBox_proc_report.Checked;
         }
         private void checkBox_keys_report_CheckedChanged(object sender, EventArgs e)
         {
             textBox_keys_report.Enabled = checkBox_keys_report.Checked;
-            textBox_keys_report.Text = "";
+            textBox_keys_report.Text = "pressedKeys.txt";
             button_keys_report.Enabled = checkBox_keys_report.Checked;
         }
         private void checkBox_proc_analys_CheckedChanged(object sender, EventArgs e)
@@ -193,7 +193,7 @@ namespace SpySettings
             button_bad_apps.Enabled = checkBox_proc_analys.Checked;
 
             textBox_badProc_report.Enabled = checkBox_proc_analys.Checked;
-            textBox_badProc_report.Text = "";
+            textBox_badProc_report.Text = "runnedBadProcs.txt";
             button_badProc_report.Enabled = checkBox_proc_analys.Checked;
 
             radioButton_badApp_close.Enabled = checkBox_proc_analys.Checked;
@@ -205,7 +205,7 @@ namespace SpySettings
             textBox_bad_words.Text = "";
             button_bad_words.Enabled = checkBox_keys_analys.Checked;
             textBox_badWords_report.Enabled = checkBox_keys_analys.Checked;
-            textBox_badWords_report.Text = "";
+            textBox_badWords_report.Text = "typedBadWords.txt";
             button_badWords_report.Enabled = checkBox_keys_analys.Checked;
         }
 
